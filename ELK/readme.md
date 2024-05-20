@@ -1,6 +1,6 @@
 Run
 ~~~bash
-wget https://github.com/CatDrug/bisecle/blob/main/ELK/install.sh 
+wget https://raw.githubusercontent.com/CatDrug/bisecle/main/ELK/install.sh
 sh install.sh
 ~~~
 

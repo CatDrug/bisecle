@@ -10,15 +10,15 @@ sysctl -p
 echo "TZ=Europe/Moscow" >> /opt/.global
 mkdir /opt/elk
 cd /opt/elk
-wget https://github.com/CatDrug/bisecle/blob/main/ELK/docker-compose.yml
+wget https://raw.githubusercontent.com/CatDrug/bisecle/main/ELK/docker-compose.yml
 docker-compose up -d
 docker-compose stop
 cd /var/lib/docker/volumes/elk_config/_data
 rm elasticsearch.yml
-wget https://github.com/CatDrug/bisecle/blob/main/ELK/elasticsearch.yml
+wget https://raw.githubusercontent.com/CatDrug/bisecle/main/ELK/elasticsearch.yml
 cd /var/lib/docker/volumes/elk_kconfig/_data
 rm kibana.yml
-wget https://github.com/CatDrug/bisecle/blob/main/ELK/kibana.yml
+wget https://raw.githubusercontent.com/CatDrug/bisecle/main/ELK/kibana.yml
 cd /opt/elk
 docker-compose up -d
 docker exec elastic bash bin/elasticsearch-users useradd goodwin -p P@ssw0rd -r superuser
