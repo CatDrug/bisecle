@@ -79,4 +79,3 @@ volumes:
 networks:
   logger:
     name: logger
-	
