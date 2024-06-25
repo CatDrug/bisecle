@@ -6,6 +6,9 @@ services:
     env_file:
       - ../.global
     environment:
+      - http.cors.enabled=true
+      - http.cors.allow-origin=*
+    environment:
       SERVER_NAME : elastic
       SERVER_HOST : elastic
       ES_JAVA_OPTS: "-Xms1g -Xmx1g"
