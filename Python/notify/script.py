@@ -71,8 +71,9 @@ def get_jira_issue_titles(issue_ids):
     return issue_titles
 
 def send_to_mattermost(issue_titles, releaseTag):
-    if not issue_titles:
+    if not issue_titles and debug != 'true':
         message = "There are no task IDs to submit."
+        return
     else:
         message = f"{title} {releaseTag}\n"
         message += "\n".join([f"• {issue_id}: {title}" for issue_id, title in issue_titles.items()])
