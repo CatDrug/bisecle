@@ -34,7 +34,8 @@ def get_last_merged_mr():
         state='merged', 
         order_by='updated_at', 
         sort='desc', 
-        per_page=1
+        per_page=1 ,
+        get_all=False
     )
     return merge_requests[0]
 
