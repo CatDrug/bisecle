@@ -9,6 +9,7 @@ from jira import JIRA
 gitlab_url       = os.environ.get('URL_GITLAB')
 gitlab_token     = os.environ.get('GITLAB_TOKEN')
 gitlab_projectID = os.environ.get('PROJECT_ID')
+gitlab_branch   = os.environ.get('BRANCH')
 jira_url         = os.environ.get('URL_JIRA')
 jira_token       = os.environ.get('JIRA_TOKEN')
 jira_prefix      = os.environ.get('JIRA_PREFIX')
@@ -16,7 +17,6 @@ mm_url           = os.environ.get('URL_MATTERMOST')
 mm_token         = os.environ.get('MM_TOKEN')
 mm_webhook_url   = mm_url + '/hooks/' + mm_token
 mm_channel       = os.environ.get('CHANNEL')
-merge_request_id = os.environ.get('MERGE_ID')
 debug            = os.environ.get('DEBUG')
 title            = os.environ.get('TITLE')
 
@@ -27,6 +27,16 @@ project = gl.projects.get(gitlab_projectID)
 
 jira_options = {'server': jira_url, 'verify': False}
 jira = JIRA(jira_options, basic_auth=('Git', jira_token ))
+
+def get_last_merged_mr():
+    merge_requests = project.mergerequests.list(
+        target_branch=gitlab_branch, 
+        state='merged', 
+        order_by='updated_at', 
+        sort='desc', 
+        per_page=1
+    )
+    return merge_requests[0]
 
 def extract_version_from_title(merge_request_title):
     match = re.search(r'\d+(\.\d+)?', merge_request_title)
@@ -75,13 +85,20 @@ def send_to_mattermost(issue_titles, releaseTag):
         response.raise_for_status()  # If the request fails, throw an exception
 
 def main():
+    last_mr = get_last_merged_mr()
+    merge_requests = project.mergerequests.list(target_branch=target_branch, state='merged', order_by='updated_at', sort='desc', per_page=1)
+    if last_mr:
+        if 'RC' not in last_mr.labels:
+            print("The last merged merge request does not have the 'RC' label.")
+            return
+    merge_request_id = last_mr.iid
     merge_request = project.mergerequests.get(merge_request_id)
     commits = merge_request.commits()
     commit_messages = [commit.title for commit in commits]
     version = extract_version_from_title(merge_request.title)
     if version is None:
         print("Error: Version not found")
-        sys.exit(1)
+        return
     releaseTag = 'v' +  version
     # Extract only unique identifiers
     filtered_jira_tasks = extract_jira_tasks(commit_messages)
