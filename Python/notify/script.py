@@ -86,7 +86,6 @@ def send_to_mattermost(issue_titles, releaseTag):
 
 def main():
     last_mr = get_last_merged_mr()
-    merge_requests = project.mergerequests.list(target_branch=target_branch, state='merged', order_by='updated_at', sort='desc', per_page=1)
     if last_mr:
         if 'RC' not in last_mr.labels:
             print("The last merged merge request does not have the 'RC' label.")
