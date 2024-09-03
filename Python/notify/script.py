@@ -33,8 +33,7 @@ def get_last_merged_mr():
         target_branch=gitlab_branch, 
         state='merged', 
         order_by='updated_at', 
-        sort='desc', 
-        per_page=1 ,
+        sort='desc',
         get_all=False
     )
     return merge_requests[0]
