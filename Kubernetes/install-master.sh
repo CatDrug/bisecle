@@ -54,3 +54,4 @@ kubeadm init
 # cp /etc/kubernetes/admin.conf /home/$HOME/.kube/config
 # chown $(id -u):$(id -g) /home/$HOME/.kube/config
 export KUBECONFIG=/etc/kubernetes/admin.conf
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
