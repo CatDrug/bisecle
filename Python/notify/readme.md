@@ -10,9 +10,9 @@ notify_mattermost:
     URL_GITLAB: "https://gitlab.com"
     URL_MATTERMOST: "https://mattermost.com"
     CHANNEL: "releases"
-    RELEASE: ${CI_COMMIT_TAG}
-    DEBUG: true
-    JIRA_PREFIX: PR
+    BRANCH: ${CI_COMMIT_REF_NAME}
+    DEBUG: fasle
+    JIRA_PREFIX: ECOMFLS
     PROJECT_ID: ${CI_PROJECT_ID}
     TITLE: 🚀 Release progect
 ~~~
